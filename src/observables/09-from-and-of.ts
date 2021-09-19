@@ -1,4 +1,4 @@
-// ! 28 - asyncScheduler
+// ! 29 - more examples with from and of
 import { of, from, Observer } from 'rxjs';
 
 const observer: Observer<any> = {
