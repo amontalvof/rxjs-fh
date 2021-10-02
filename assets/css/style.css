@@ -1,20 +1,23 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:100,400&display=swap');
 
-*, html, body {
+*,
+html,
+body {
     font-family: 'Roboto', sans-serif;
     color: white;
 }
 
-body{
+body {
     text-align: center !important;
-    background-color: #18202F;
+    background-color: #18202f;
 }
 
 h1 {
     font-weight: lighter;
 }
 
-input, button {
+input,
+button {
     width: 35%;
     padding: 10px;
     color: black;
@@ -23,7 +26,8 @@ input, button {
     border-radius: 10px;
 }
 
-button, video{
+button,
+video {
     margin-right: 10px;
 }
 
@@ -43,9 +47,8 @@ ol {
     left: 0;
     height: 5px;
     width: 0%;
-    background-color: #9034AA;
+    background-color: #9034aa;
 }
-
 
 .loading {
     position: fixed;
@@ -57,7 +60,7 @@ ol {
     background-color: rgba(0, 0, 0, 0.3);
     color: white;
     font-size: 2rem;
-   
+
     display: flex;
     justify-content: center;
     align-content: center;
@@ -69,25 +72,25 @@ ol {
 
 @-webkit-keyframes fadeIn {
     from {
-      opacity: 0;
+        opacity: 0;
     }
-  
+
     to {
-      opacity: 1;
+        opacity: 1;
     }
 }
-  
+
 @keyframes fadeIn {
     from {
-      opacity: 0;
+        opacity: 0;
     }
-  
+
     to {
-      opacity: 1;
+        opacity: 1;
     }
 }
-  
-  .fadeIn {
+
+.fadeIn {
     -webkit-animation-name: fadeIn;
     animation-name: fadeIn;
 }
