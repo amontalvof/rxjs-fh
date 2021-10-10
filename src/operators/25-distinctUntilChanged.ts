@@ -1,7 +1,7 @@
 // ! 53 - distinctUntilChanged
 
 import { of, from, Observer } from 'rxjs';
-import { distinct, distinctUntilChanged } from 'rxjs/operators';
+import { distinctUntilChanged } from 'rxjs/operators';
 
 const observer: Observer<any> = {
     next: (value) => console.log('next:', value),
