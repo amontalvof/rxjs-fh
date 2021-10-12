@@ -1,7 +1,7 @@
-// ! 58 - debounceTime
+// ! 59 - throttleTime
 
-import { fromEvent, Observer } from 'rxjs';
-import { debounceTime, pluck, distinctUntilChanged } from 'rxjs/operators';
+import { asyncScheduler, fromEvent, Observer } from 'rxjs';
+import { throttleTime, pluck, distinctUntilChanged } from 'rxjs/operators';
 
 const observer: Observer<any> = {
     next: (value) => console.log('next:', value),
@@ -11,7 +11,7 @@ const observer: Observer<any> = {
 
 const click$ = fromEvent<PointerEvent>(document, 'click');
 
-click$.pipe(debounceTime(3000))//.subscribe(observer);
+click$.pipe(throttleTime(3000)); //.subscribe(observer);
 
 // * Example 2
 const input = document.createElement('input');
@@ -19,5 +19,9 @@ document.querySelector('body').append(input);
 
 const input$ = fromEvent(input, 'keyup');
 input$
-    .pipe(debounceTime(1000), pluck('target', 'value'), distinctUntilChanged())
+    .pipe(
+        throttleTime(1000, asyncScheduler, { leading: true, trailing: true }),
+        pluck('target', 'value'),
+        distinctUntilChanged()
+    )
     .subscribe(observer);
