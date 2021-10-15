@@ -9,12 +9,8 @@ const observer: Observer<any> = {
     complete: () => console.info('completed'),
 };
 
-const interval$ = interval(500)
+const interval$ = interval(500);
 
 const click$ = fromEvent<PointerEvent>(document, 'click');
 
-interval$
-    .pipe(
-        sample(click$),
-    )
-    .subscribe(observer);
+interval$.pipe(sample(click$)).subscribe(observer);

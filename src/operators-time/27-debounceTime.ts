@@ -11,7 +11,7 @@ const observer: Observer<any> = {
 
 const click$ = fromEvent<PointerEvent>(document, 'click');
 
-click$.pipe(debounceTime(3000))//.subscribe(observer);
+click$.pipe(debounceTime(3000)); //.subscribe(observer);
 
 // * Example 2
 const input = document.createElement('input');
