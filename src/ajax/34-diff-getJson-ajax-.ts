@@ -1,4 +1,4 @@
-// ! 70 - getJSON
+// ! 70 - Differences between getJson and ajax
 
 import { of,Observer } from 'rxjs';
 import { ajax, AjaxError } from 'rxjs/ajax';
