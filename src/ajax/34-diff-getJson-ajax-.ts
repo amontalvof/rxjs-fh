@@ -1,6 +1,6 @@
 // ! 70 - Differences between getJson and ajax
 
-import { of,Observer } from 'rxjs';
+import { of, Observer } from 'rxjs';
 import { ajax, AjaxError } from 'rxjs/ajax';
 import { catchError } from 'rxjs/operators';
 
@@ -11,11 +11,12 @@ const observer: Observer<any> = {
 };
 
 const handleError = (resp: AjaxError) => {
-    console.warn('Error:',resp.message)
+    console.warn('Error:', resp.message);
     return of({
-        ok:false,users:[]
-    })
-}
+        ok: false,
+        users: [],
+    });
+};
 
 const url = 'https://httpbin.orgx/delay/1';
 
