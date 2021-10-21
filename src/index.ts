@@ -1,8 +1,8 @@
-// ! 71 - Post, Put, Delete methods
+// ! 75 - transformation operators
 
-import { of, Observer } from 'rxjs';
+import { fromEvent, Observer } from 'rxjs';
 import { ajax, AjaxError } from 'rxjs/ajax';
-import { catchError } from 'rxjs/operators';
+import { pluck,map,debounceTime,catchError } from 'rxjs/operators';
 
 const observer: Observer<any> = {
     next: (value) => console.log('next:', value),
@@ -10,33 +10,21 @@ const observer: Observer<any> = {
     complete: () => console.info('completed'),
 };
 
-const handleError = (resp: AjaxError) => {
-    console.warn('Error:', resp.message);
-    return of({
-        ok: false,
-        users: [],
-    });
-};
+// * References
+const body = document.querySelector('body');
+const textInput = document.createElement('input');
+const orderList = document.createElement('ol');
+body.append(textInput,orderList);
 
-const url = 'https://httpbin.org/delay/1';
+// * Streams
+const input$ = fromEvent<KeyboardEvent>(textInput, 'keyup');
 
-// const obs$ = ajax.post(url,{
-//     id:'123qwe',
-//     name:'Andy'
-// },{
-//     'my-token':'456asd'
-// });
-
-const obs$ = ajax({
-    url,
-    method: 'POST',
-    body: {
-        id: '123qwe',
-        name: 'Andy',
-    },
-    headers: {
-        'my-token': '456asd',
-    },
-});
-
-obs$.pipe(catchError(handleError)).subscribe(observer);
+input$.pipe(
+    debounceTime(500),
+    map((event) => {
+        const text = event.target['value'];
+        return ajax.getJSON(`https://api.github.com/users/${text}`)
+    })
+).subscribe((resp) => {
+    resp.pipe(pluck('url')).subscribe(observer)
+})
