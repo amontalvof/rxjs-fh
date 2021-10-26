@@ -1,4 +1,4 @@
-// ! 76 - mergeAll
+// ! 76 and 77- mergeAll
 
 import { fromEvent, Observer } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
