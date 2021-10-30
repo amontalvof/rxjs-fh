@@ -1,8 +1,16 @@
 // ! 84 - Comparison exercise between the mergeMap, switchMap and exhaustMap
 
-import { fromEvent, interval, Observer } from 'rxjs';
+import { of, fromEvent, Observer } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
-import { tap, map, take, exhaustMap } from 'rxjs/operators';
+import {
+    tap,
+    map,
+    pluck,
+    catchError,
+    mergeMap,
+    switchMap,
+    exhaustMap,
+} from 'rxjs/operators';
 
 const observer: Observer<any> = {
     next: (value) => console.log('next:', value),
@@ -32,7 +40,10 @@ document.querySelector('body').append(form);
 
 //* Helper
 const requestHttpLogin = (userPass) => {
-    return ajax.post('https://reqres.in/api/login?delay=1');
+    return ajax.post('https://reqres.in/api/login?delay=1', userPass).pipe(
+        pluck('response', 'token'),
+        catchError(() => of('xxx'))
+    );
 };
 
 // * Streams
@@ -41,7 +52,10 @@ const submitForm$ = fromEvent<SubmitEvent>(form, 'submit').pipe(
     map((event) => ({
         email: event.target[0].value,
         password: event.target[1].value,
-    }))
+    })),
+    // mergeMap(requestHttpLogin)
+    // switchMap(requestHttpLogin)
+    exhaustMap(requestHttpLogin)
 );
 
 submitForm$.subscribe(observer);
