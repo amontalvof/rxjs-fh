@@ -1,4 +1,4 @@
-// ! 95 - LAb forkJoin function
+// ! 95 - Lab forkJoin function
 import { of, forkJoin, Observer } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
 import { catchError } from 'rxjs/operators';
