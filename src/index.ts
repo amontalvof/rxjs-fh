@@ -1,7 +1,21 @@
-// ! 95 - LAb forkJoin function
-import { of, forkJoin, Observer } from 'rxjs';
-import { ajax } from 'rxjs/ajax';
-import { catchError } from 'rxjs/operators';
+// ! 99 - capitalize exercise
+/**
+ * Exercise:
+ * The objective of is to make the same impression, but using observables
+ * Note: DO NOT use the "FOR OF" loop, use an observable and call the capitalize function
+ */
+
+/**
+ * Expected output:
+ * Batman
+ * Joker
+ * Double Side
+ * Penguin
+ * Poison Ivy
+ */
+
+import { from, Observer } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 const observer: Observer<any> = {
     next: (value) => console.log('next:', value),
@@ -9,14 +23,20 @@ const observer: Observer<any> = {
     complete: () => console.info('completed'),
 };
 
-const GITHUB_API_URL = 'https://api.github.com/users';
-const GITHUB_USER = 'amontalvof';
+(() => {
+    const names = [
+        'batman',
+        'joker',
+        'doble cara',
+        'pingüino',
+        'hiedra venenosa',
+    ];
 
-forkJoin({
-    user: ajax.getJSON(`${GITHUB_API_URL}/${GITHUB_USER}`),
-    repos: ajax.getJSON(`${GITHUB_API_URL}/${GITHUB_USER}/repos111111`),
-    // .pipe(catchError(() => of([]))),
-    gists: ajax.getJSON(`${GITHUB_API_URL}/${GITHUB_USER}/gists`),
-})
-    .pipe(catchError((error) => of(error.message)))
-    .subscribe(observer);
+    const capitalize = (name: string) =>
+        name.replace(
+            /\w\S*/g,
+            (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+        );
+
+    from(names).pipe(map(capitalize)).subscribe(observer);
+})();
