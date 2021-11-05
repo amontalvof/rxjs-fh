@@ -1,33 +1,28 @@
-// ! 100 - reduce exercise
+// ! 101 - randoms exercise
 /**
- * Exercise:
- * Add all the numbers in the array using a reduce.
- * You must filter so that only numbers are processed
- * The output must be 32
+ * Exercise: Make the final two observables,
+ * emit exactly the same value
  *
- * Tip:
- * isNan () is a JavaScript function to determine if it is number
- * Use filter <any> (...) to avoid typing problems.
+ * Tip: Hot Observable? subjects?
  */
 
-import { from, Observer } from 'rxjs';
-import { filter, reduce } from 'rxjs/operators';
-
-const observer: Observer<any> = {
-    next: (value) => console.log('next:', value),
-    error: (error) => console.warn('error:', error),
-    complete: () => console.info('completed'),
-};
+import { interval, Subject } from 'rxjs';
+import { take, map } from 'rxjs/operators';
 
 (() => {
-    const datos = [1, 2, 'foo', 3, 5, 6, 'bar', 7, 8];
+    // == DO NOT TOUCH this block ====================
+    const watch$ = interval(1000).pipe(
+        take(5),
+        map((val) => Math.round(Math.random() * 100))
+    );
+    // Do not touch the creation of the observable
+    // ============================================
 
-    from(datos)
-        .pipe(
-            filter<any>((value) => !isNaN(value)),
-            reduce((accumulator: number, currentValue: number): number => {
-                return accumulator + currentValue;
-            }, 0)
-        )
-        .subscribe(observer); // The output should be 32
+    const subject$ = new Subject();
+    watch$.subscribe(subject$);
+
+    // These two observables must emit exactly the same values
+    subject$.subscribe((val) => console.log('obs1', val));
+    subject$.subscribe((val) => console.log('obs2', val));
+    subject$.subscribe((val) => console.log('obs3', val));
 })();

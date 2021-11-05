@@ -1,33 +1,28 @@
-import { interval } from 'rxjs';
-import { take, map } from 'rxjs/operators';
+// ! 101 - randoms exercise
 /**
- * Ejercicio: Realizar que los dos observables finales, 
- * emitan exactamente el mismo valor
- * 
+ * Exercise: Make the final two observables,
+ * emit exactly the same value
+ *
  * Tip: Hot Observable? subjects?
  */
 
-(() =>{
+import { interval, Subject } from 'rxjs';
+import { take, map } from 'rxjs/operators';
 
-  // == NO TOCAR este bloque ====================
-  const reloj$ = interval(1000).pipe(
-    take(5),
-    map( val => Math.round(Math.random() * 100) )
-  );
-  // No tocar la creación del observable
-  // ============================================
+(() => {
+    // == DO NOT TOUCH this block ====================
+    const watch$ = interval(1000).pipe(
+        take(5),
+        map((val) => Math.round(Math.random() * 100))
+    );
+    // Do not touch the creation of the observable
+    // ============================================
 
-    
-  
-  
-  // Estos dos observables deben de emitir exactamente los mismos valores
-  reloj$.subscribe( val => console.log('obs1', val) );
-  reloj$.subscribe( val => console.log('obs2', val) );
+    const subject$ = new Subject();
+    watch$.subscribe(subject$);
 
-
-
-
-
+    // These two observables must emit exactly the same values
+    subject$.subscribe((val) => console.log('obs1', val));
+    subject$.subscribe((val) => console.log('obs2', val));
+    subject$.subscribe((val) => console.log('obs3', val));
 })();
-
-		
