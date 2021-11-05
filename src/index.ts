@@ -1,21 +1,17 @@
-// ! 99 - capitalize exercise
+// ! 100 - reduce exercise
 /**
  * Exercise:
- * The objective of is to make the same impression, but using observables
- * Note: DO NOT use the "FOR OF" loop, use an observable and call the capitalize function
- */
-
-/**
- * Expected output:
- * Batman
- * Joker
- * Double Side
- * Penguin
- * Poison Ivy
+ * Add all the numbers in the array using a reduce.
+ * You must filter so that only numbers are processed
+ * The output must be 32
+ *
+ * Tip:
+ * isNan () is a JavaScript function to determine if it is number
+ * Use filter <any> (...) to avoid typing problems.
  */
 
 import { from, Observer } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { filter, reduce } from 'rxjs/operators';
 
 const observer: Observer<any> = {
     next: (value) => console.log('next:', value),
@@ -24,19 +20,14 @@ const observer: Observer<any> = {
 };
 
 (() => {
-    const names = [
-        'batman',
-        'joker',
-        'doble cara',
-        'pingüino',
-        'hiedra venenosa',
-    ];
+    const datos = [1, 2, 'foo', 3, 5, 6, 'bar', 7, 8];
 
-    const capitalize = (name: string) =>
-        name.replace(
-            /\w\S*/g,
-            (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
-        );
-
-    from(names).pipe(map(capitalize)).subscribe(observer);
+    from(datos)
+        .pipe(
+            filter<any>((value) => !isNaN(value)),
+            reduce((accumulator: number, currentValue: number): number => {
+                return accumulator + currentValue;
+            }, 0)
+        )
+        .subscribe(observer); // The output should be 32
 })();
