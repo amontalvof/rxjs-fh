@@ -14,7 +14,7 @@
 // 1
 // 0
 
-import { interval, Subject, Observer } from 'rxjs';
+import { interval, Observer } from 'rxjs';
 import { take, map } from 'rxjs/operators';
 
 const observer: Observer<any> = {

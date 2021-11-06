@@ -1,12 +1,11 @@
-import { interval, timer } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+// ! 103 - countdown exercise
 /**
- * Ejercicio: Combinar ambos observables (letras$, numeros$)
- * para que las emisiones sean la concatenación de los últimos
- * valores emitidos
+ * Exercise: Combine both observables (letters $, numbers $)
+ * so that the emissions are the concatenation of the last
+ * securities issued
  */
 
-//  Ejemplo de la tada esperada:
+// Example of the expected rate:
 // a1
 // a2
 // b2
@@ -17,40 +16,32 @@ import { map, take } from 'rxjs/operators';
 // d5
 // e5
 
-(() =>{
+import { interval, timer, combineLatest, Observer } from 'rxjs';
+import { take, map } from 'rxjs/operators';
 
-    const letras  = ['a','b','c','d','e'];
-    const numeros = [1,2,3,4,5];
+const observer: Observer<any> = {
+    next: (value) => console.log('next:', value),
+    error: (error) => console.warn('error:', error),
+    complete: () => console.info('completed'),
+};
 
-    // Emite letras cada segundo
-    const letras$  = interval(1000).pipe(
-        map( i => letras[i] ),
-        take( letras.length )
+(() => {
+    const letters = ['a', 'b', 'c', 'd', 'e'];
+    const numbers = [1, 2, 3, 4, 5];
+
+    // Emit letters every second
+    const letters$ = interval(1000).pipe(
+        map((item) => letters[item]),
+        take(letters.length)
     );
-    
-    // Emite numeros del 1 al 5 cada segundo, pero tiene un delay inicial
-    // de 500 milésimas 
-    const numeros$ = timer(500,1000).pipe(
-        map( i => numeros[i] ),
-        take( numeros.length )
+
+    // It emits numbers from 1 to 5 every second, but has an initial delay of 500 thousandths
+    const numbers$ = timer(500, 1000).pipe(
+        map((item) => numbers[item]),
+        take(numbers.length)
     );
 
-    // ========================================
-    // Empezar a codificar aquí abajo
-    // Nota, el subscribe debe de ser así
-    // .subscribe( console.log )
-    // Es decir, la salida en el subscribe debe 
-    // de estar procesada en su totalidad
-    // ========================================
-
-
-
-
-
-
-
-
-
+    combineLatest(letters$, numbers$)
+        .pipe(map(([a, b]) => a + b))
+        .subscribe(observer);
 })();
-
-		
