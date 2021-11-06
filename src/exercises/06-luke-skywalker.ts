@@ -1,65 +1,53 @@
-import { ajax } from 'rxjs/ajax';
-import { switchMap, map } from 'rxjs/operators';
-import { zip, of } from 'rxjs';
-
+// ! 104 - Luke Skywalker exercise
 /**
- * Ejercicio: 
- *  Realizar 2 peticiones HTTP (ajax) una después de otra.
- *  
- *  La primera debe de obtener el personaje de Star Wars:
- *   Luke Skywalker, llamando el endpoint:   /people/1/
- * 
- *  La segunda petición, debe de ser utilizando el objeto
- *  de la petición anterior, y tomar la especie (species),
- *  que es un arreglo de URLs (array), dentro de ese arreglo, 
- *  tomar la primera posición y realizar la llamada a ese URL,
- *  el cual debería de traer información sobre su especie (Human)
+ * Exercise:
+ * Make 2 HTTP requests (ajax) one after another.
+ *
+ * The first one must obtain the Star Wars character:
+ * Luke Skywalker, calling the endpoint: / people / 1 /
+ *
+ * The second request must be using the object
+ * from the previous request, and take the starships (starships),
+ * which is an array of URLs (array), within that array,
+ * take the first position and make the call to that URL,
+ * which should bring information about your starships
  */
 
-// Respuesta esperada:
-// Información sobre los humanos en el universo de Star Wars
-// Ejemplo de la data esperada
-/*
- { name: "Human", classification: "mammal", designation: "sentient", average_height: "180", skin_colors: "caucasian, black, asian, hispanic", …}
-*/
+// Expected response:
+// Information about starship in the Star Wars universe
+// Example of the expected data
 
-// Respuesta esperada con Mayor dificultad
-// Retornar el siguiente objeto con la información de ambas peticiones
-// Recordando que se disparan una después de la otra, 
-// con el URL que viene dentro del arreglo de 'species'
+// Expected response with Greater difficulty
+// Return the following object with the information of both requests
+// Remembering that they fire one after the other,
+// with the URL that comes inside the array of 'starships'
 
-// Tip: investigar sobre la función zip: 
-//      Que permite combinar observables en un arreglo de valores
+// Tip: investigate the zip function:
+// That allows combining observables in an array of values
 // https://rxjs-dev.firebaseapp.com/api/index/function/zip
 
-// Ejemplo de la data esperada:
-/*
-    especie: {name: "Human", classification: "mammal", designation: "sentient", average_height: "180", skin_colors: "caucasian, black, asian, hispanic", …}
-    personaje: {name: "Luke Skywalker", height: "172", mass: "77", hair_color: "blond", skin_color: "fair", …}
-*/
+import { zip, of, Observer } from 'rxjs';
+import { switchMap, map } from 'rxjs/operators';
+import { ajax } from 'rxjs/ajax';
 
+const observer: Observer<any> = {
+    next: (value) => console.log('next:', value),
+    error: (error) => console.warn('error:', error),
+    complete: () => console.info('completed'),
+};
 
-(() =>{
-
-    // No tocar ========================================================
-    const SW_API = 'https://swapi.dev/api';                     
-    const getRequest = ( url: string ) => ajax.getJSON<any>(url);
+(() => {
+    // Do not touch ========================================================
+    const SW_API = 'https://swapi.dev/api';
+    const getRequest = (url: string) => ajax.getJSON<any>(url);
     // ==================================================================
 
-    // Realizar el llamado al URL para obtener a Luke Skywalker
-    getRequest(`Aquí va un URL`).pipe(
-        // Realizar los operadores respectivos aquí
-        
-
-
-        
-
-    // NO TOCAR el subscribe ni modificarlo ==
-    ).subscribe( console.log )           // ==
+    // Call the URL to get Luke Skywalker
+    getRequest(`${SW_API}/people/1`)
+        .pipe(
+            switchMap((resp) => zip(of(resp), getRequest(resp.starships[0]))),
+            map(([character, starship]) => ({ character, starship }))
+        )
+        .subscribe(observer);
     // =======================================
-
-
-
 })();
-
-		
